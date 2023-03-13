@@ -7,4 +7,14 @@ make sure you have root level permissions";
 exit;
 fi;
 
-echo "just test";
+systemType=$(awk -F= '/^ID/{print $2}' /etc/os-release);
+
+apt-get -y install lsb-release ca-certificates curl;
+apt install wget -y;
+
+bash apacheInstall.sh;
+bash phpInstall.sh 8.2;
+bash composerInstall.sh;
+bash nodejsInstall.sh;
+bash mySqlInstall.sh;
+bash gitInstall.sh;
