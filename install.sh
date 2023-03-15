@@ -5,7 +5,7 @@ NO_COLOUR="\e[0m";
 uid=$(id -u);
 if [ $uid -ne 0 ];
 then
-    echo -e "${COLOUR_RED}Hey there this is script for installing some software on ubuntu system\nand this script need sudo permission to install everything so\nmake sure you have root level permissions.${NO_COLOUR}";
+    echo -e "${COLOUR_RED}Hey there this is script for installing some software on Debian/ubuntu system\nand this script need sudo permission to install everything so\nmake sure you have root level permissions.${NO_COLOUR}";
     exit;
 fi;
 
