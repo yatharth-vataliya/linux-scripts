@@ -1,3 +1,4 @@
+#!/bin/bash
 COLOUR_RED="\e[31m";
 COLOUR_GREEN="\e[32m";
 NO_COLOUR="\e[0m";
