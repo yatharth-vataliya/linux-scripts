@@ -90,7 +90,7 @@ function installPHP(){
 
     read -p "Please give specific version of PHP. For example 7.4 or 8.2 :- " phpVersion;
     echo -e "\n${COLOUR_GREEN}Installing php version php$phpVersion${NO_COLOUR}\n";
-    apt install -y php$phpVersion-fpm php$phpVersion-intl php$phpVersion-pdo php$phpVersion-xml php$phpVersion-mysql php$phpVersion-mbstring php$phpVersion-zip php$phpVersion-imagick php$phpVersion-xdebug php$phpVersion-uuid php$phpVersion-bcmath php$phpVersion-bz2 \
+    apt install -y php$phpVersion-fpm php$phpVersion-intl php$phpVersion-mysql php$phpVersion-pdo php$phpVersion-xml php$phpVersion-mbstring php$phpVersion-zip php$phpVersion-imagick php$phpVersion-xdebug php$phpVersion-uuid php$phpVersion-bcmath php$phpVersion-bz2 \
     php$phpVersion-gd php$phpVersion-redis php$phpVersion-curl libapache2-mod-php$phpVersion;
     echo -e "\n${COLOUR_GREEN}PHP version $phpVersion successfully installed.${NO_COLOUR}\n";
     php --version;
