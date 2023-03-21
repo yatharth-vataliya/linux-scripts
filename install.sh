@@ -20,32 +20,32 @@ options=("All" "Apache2" "PHP" "Composer" "NodeJS" "MySql" "Git");
 
 function main(){
 
-echo -e "\n";
-echo -e "${COLOUR_RED}Please select any option :-
-1 Apache2
-2 PHP
-3 Composer
-4 NodeJS
-5 MySql
-6 Git
-0 All
-${NO_COLOUR}";
-
-read selectedOption;
-
-case $selectedOption in
-    0) installAll ;;
-    1) installApache ;;
-    2) installPHP ;;
-    3) installComposer ;;
-    4) installNodeJS ;;
-    5) installMySql ;;
-    6) installGit ;;
-    *)
-        echo -e "${COLOUR_RED}Please select proper option between 0 to 6${NO_COLOUR}";
-        main
-        ;;
-esac;
+    echo -e "\n";
+    echo -e "${COLOUR_RED}Please select any option :-
+    1 Apache2
+    2 PHP
+    3 Composer
+    4 NodeJS
+    5 MySql
+    6 Git
+    0 All
+    ${NO_COLOUR}";
+    
+    read selectedOption;
+    
+    case $selectedOption in
+        0) installAll ;;
+        1) installApache ;;
+        2) installPHP ;;
+        3) installComposer ;;
+        4) installNodeJS ;;
+        5) installMySql ;;
+        6) installGit ;;
+        *)
+            echo -e "${COLOUR_RED}Please select proper option between 0 to 6${NO_COLOUR}";
+            main
+            ;;
+    esac;
 }
 
 function installAll(){
