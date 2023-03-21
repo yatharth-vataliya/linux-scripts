@@ -1,6 +1,6 @@
 <?php
 
-function changeErrorVariable(
+function SearchAndReplace(
     string $directoryPath,
     string $fileName,
     string $searchText,
@@ -11,7 +11,7 @@ function changeErrorVariable(
     unset($directories[1]);
     foreach ($directories as $dir) {
         if (is_dir(getFullDir(directoryPath: $directoryPath, currentDir: $dir))) {
-            changeErrorVariable(
+            SearchAndReplace(
                 getFullDir(directoryPath: $directoryPath, currentDir: $dir),
                 $fileName,
                 $searchText,
@@ -88,7 +88,7 @@ PRINT;
 
 $replaceText = getFromInputStream($inputStream);
 
-changeErrorVariable(
+SearchAndReplace(
     directoryPath: $directoryPath,
     fileName: $fileName,
     searchText: $searchText,
