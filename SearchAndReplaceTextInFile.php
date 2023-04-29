@@ -23,6 +23,8 @@ function SearchAndReplace(
                 directoryPath: $directoryPath,
                 currentDir: $dir
             );
+            echo "Processing on file $fullPath". PHP_EOL;
+            echo "\n";
             copy($fullPath, "$fullPath." . time() . ".original.backup");
             copy($fullPath, "$fullPath.bac");
             $fileReadHandle = fopen($fullPath, "r");
