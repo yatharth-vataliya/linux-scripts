@@ -112,11 +112,17 @@ function installComposer(){
     fi;
 }
 function installNodeJS(){
-    echo -e "\n${COLOUR_RED}Adding necessary PPA for nodejs.${NO_COLOUR}\n";
-    curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt-get install -y nodejs;
+    # echo -e "\n${COLOUR_RED}Adding necessary PPA for nodejs.${NO_COLOUR}\n";
+    # curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt-get install -y nodejs; # Old deprecated script
+    read -p "Please give specific version of NodeJs like 18, 20 :- " nodeJs;
+    curl -SLO https://deb.nodesource.com/nsolid_setup_deb.sh
+    chmod 500 nsolid_setup_deb.sh
+    source nsolid_setup_deb.sh $nodeJs;
+    apt-get install nodejs -y
     echo -e "\n${COLOUR_GREEN}nodejs installed successfully.${NO_COLOUR}\n";
     node --version;
     npm --version;
+    rm nsolid_setup_deb.sh
 }
 function installMySql(){
     echo -e "\nInstalling MySql Server.\n";
