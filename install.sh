@@ -28,6 +28,7 @@ function main(){
     4 NodeJS
     5 MySql
     6 Git
+    7 Bun
     0 All
     ${NO_COLOUR}";
     
@@ -41,8 +42,9 @@ function main(){
         4) installNodeJS ;;
         5) installMySql ;;
         6) installGit ;;
+        7) installBun ;;
         *)
-            echo -e "${COLOUR_RED}Please select proper option between 0 to 6${NO_COLOUR}";
+            echo -e "${COLOUR_RED}Please select proper option between 0 to 7${NO_COLOUR}";
             main
             ;;
     esac;
@@ -181,5 +183,11 @@ function installGit(){
     apt install -y git;
     echo -e "\n${COLOUR_GREEN}Git installed successfully.${NO_COLOUR}\n";
     git --version;
+}
+function installBun(){
+    echo -e "\nInstalling Bun \n";
+    curl -fsSL https://bun.sh/install | bash
+    echo -e "\n${COLOUR_GREEN}Bun installed successfully.${NO_COLOUR}\n";
+    bun --version
 }
 main;
