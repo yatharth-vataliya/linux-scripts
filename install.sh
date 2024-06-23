@@ -3,15 +3,15 @@ COLOUR_RED="\e[31m";
 COLOUR_GREEN="\e[32m";
 NO_COLOUR="\e[0m";
 
-uid=$(id -u);
-if [ $uid -ne 0 ];
-then
-    echo -e "${COLOUR_RED}Hey there this is script for installing some software on Debian/ubuntu system\nand this script need sudo permission to install everything so\nmake sure you have root level permissions.${NO_COLOUR}";
-    exit;
-fi;
+#uid=$(id -u);
+#if [ $uid -ne 0 ];
+#then
+#    echo -e "${COLOUR_RED}Hey there this is script for installing some software on Debian/ubuntu system\nand this script need sudo permission to install everything so\nmake sure you have root level permissions.${NO_COLOUR}";
+#    exit;
+#fi;
 
-apt-get -y install lsb-release ca-certificates curl;
-apt install wget -y;
+sudo apt-get -y install lsb-release ca-certificates curl;
+sudo apt install wget -y;
 SYSTEMTYPE=$(lsb_release -si);
 
 echo "This is script for installing web development software on Debian/Ubuntu system";
@@ -57,22 +57,23 @@ function installAll(){
     installNodeJS;
     installMySql;
     installGit;
+    installBun;
 }
 
 function installApache(){
     echo -e "\n${COLOUR_RED}Adding necessary PPA for Apache2 server.${NO_COLOUR}\n";
     if [ $SYSTEMTYPE == "Debian" ];
     then
-        curl -sSLo /usr/share/keyrings/deb.sury.org-apache2.gpg https://packages.sury.org/apache2/apt.gpg;
-        sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-apache2.gpg] https://packages.sury.org/apache2/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/apache2.list';
-        apt-get update;
+        sudo curl -sSLo /usr/share/keyrings/deb.sury.org-apache2.gpg https://packages.sury.org/apache2/apt.gpg;
+        sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-apache2.gpg] https://packages.sury.org/apache2/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/apache2.list';
+        sudo apt-get update;
     elif [ $SYSTEMTYPE == "Ubuntu" ];
     then
-        add-apt-repository -y ppa:ondrej/apache2;
-        apt update;
+        sudo add-apt-repository -y ppa:ondrej/apache2;
+        sudo apt update;
     fi;
 
-    apt install -y apache2;
+    sudo apt install -y apache2;
     echo -e "\n${COLOUR_GREEN}Apache is installed successfully.${NO_COLOUR}\n";
     apache2 -V;
 }
@@ -83,22 +84,22 @@ function installPHP(){
     then
         curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
         sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
-        apt-get update
+        sudo apt-get update
     elif [ $SYSTEMTYPE == "Ubuntu" ];
     then
-        add-apt-repository -y ppa:ondrej/php;
-        apt update;
+        sudo add-apt-repository -y ppa:ondrej/php;
+        sudo apt update;
     fi;
 
     read -p "Please give specific version of PHP. For example 7.4 or 8.2 :- " phpVersion;
     echo -e "\n${COLOUR_GREEN}Installing php version php$phpVersion${NO_COLOUR}\n";
-    apt install -y php$phpVersion-fpm php$phpVersion-intl php$phpVersion-mysql php$phpVersion-pdo php$phpVersion-pgsql php$phpVersion-xml php$phpVersion-mbstring php$phpVersion-zip php$phpVersion-imagick php$phpVersion-xdebug php$phpVersion-uuid php$phpVersion-bcmath php$phpVersion-bz2 php$phpVersion-sqlite3 \
+    sudo apt install -y php$phpVersion-fpm php$phpVersion-intl php$phpVersion-mysql php$phpVersion-pdo php$phpVersion-pgsql php$phpVersion-xml php$phpVersion-mbstring php$phpVersion-zip php$phpVersion-imagick php$phpVersion-xdebug php$phpVersion-uuid php$phpVersion-bcmath php$phpVersion-bz2 php$phpVersion-sqlite3 \
     php$phpVersion-gd php$phpVersion-redis php$phpVersion-curl libapache2-mod-php$phpVersion;
     echo -e "\n${COLOUR_GREEN}PHP version $phpVersion successfully installed.${NO_COLOUR}\n";
     php --version;
-    a2enmod proxy_fcgi setenvif;
-    a2enconf php$phpVersion-fpm;
-    systemctl restart apache2 php$phpVersion-fpm;
+    sudo a2enmod proxy_fcgi setenvif;
+    sudo a2enconf php$phpVersion-fpm;
+    sudo systemctl restart apache2 php$phpVersion-fpm;
 }
 function installComposer(){
     echo -e "\n${COLOUR_GREEN}Installing composer${NO_COLOUR}\n";
@@ -107,7 +108,7 @@ function installComposer(){
         php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');";
         php composer-setup.php;
         php -r "unlink('composer-setup.php');";
-        mv composer.phar /usr/local/bin/composer
+        sudo mv composer.phar /usr/local/bin/composer
     else
         echo -e "\n${COLOUR_RED}PHP is not installed please install PHP first.${NO_COLOUR}\n";
         exit;
@@ -119,12 +120,12 @@ function installNodeJS(){
     read -p "Please give specific version of NodeJs like 18, 20 :- " nodeJs;
     curl -SLO https://deb.nodesource.com/nsolid_setup_deb.sh
     chmod 500 nsolid_setup_deb.sh
-    source nsolid_setup_deb.sh $nodeJs;
-    apt-get install nodejs -y
+    sudo source nsolid_setup_deb.sh $nodeJs;
+    sudo apt-get install nodejs -y
     echo -e "\n${COLOUR_GREEN}nodejs installed successfully.${NO_COLOUR}\n";
     node --version;
     npm --version;
-    rm nsolid_setup_deb.sh
+    sudo rm nsolid_setup_deb.sh
 }
 function installMySql(){
     echo -e "\nInstalling MySql Server.\n";
@@ -132,10 +133,10 @@ function installMySql(){
     if [ $SYSTEMTYPE == "Debian" ];
     then
     wget https://dev.mysql.com/get/mysql-apt-config_0.8.20-1_all.deb
-    apt install ./mysql-apt-config_*_all.deb
+    sudo apt install ./mysql-apt-config_*_all.deb
     fi;
 
-    apt update
+    sudo apt update
 
     declare -a keyservers=(
         "hkp://keyserver.ubuntu.com:80"
@@ -148,12 +149,12 @@ function installMySql(){
         "hkp://pgp.mit.edu:80"
     )
 
-    keys=$(apt update 2>&1 | grep -o '[0-9A-Z]\{16\}$')
+    keys=$(sudo apt update 2>&1 | grep -o '[0-9A-Z]\{16\}$')
 
     for key in $keys; do
         for server in "${keyservers[@]}"; do
             echo -e "${COLOUR_RED}Fetching GPG key ${key} from ${server}${NO_COLOUR}"
-            apt-key adv --keyserver $server --keyserver-options timeout=10 --recv-keys ${key}
+            sudo apt-key adv --keyserver $server --keyserver-options timeout=10 --recv-keys ${key}
             if [ $? -eq 0 ]; then
                 echo -e "${COLOUR_GREEN}Key '${key}' successful added from server '${server}'${NO_COLOUR}"
                 break
@@ -164,23 +165,23 @@ function installMySql(){
         done
     done
 
-    apt install -y mysql-server;
+    sudo apt install -y mysql-server;
 
     echo -e "\n${COLOUR_GREEN}MySql is installed successfully.${NO_COLOUR}\n";
 
     mysql -V;
-    systemctl enable --now mysql;
-    rm mysql-apt-config_*_all.deb;
+    sudo systemctl enable --now mysql;
+    sudo rm mysql-apt-config_*_all.deb;
 }
 function installGit(){
     echo -e "\nInstalling Git .\n";
     if [ $SYSTEMTYPE == "Ubuntu" ];
     then
         echo -e "\n${COLOUR_RED}Adding necessary PPA for Git.${NO_COLOUR}\n";
-        add-apt-repository -y ppa:git-core/ppa;
-        apt update;
+        sudo add-apt-repository -y ppa:git-core/ppa;
+        sudo apt update;
     fi;
-    apt install -y git;
+    sudo apt install -y git;
     echo -e "\n${COLOUR_GREEN}Git installed successfully.${NO_COLOUR}\n";
     git --version;
 }
