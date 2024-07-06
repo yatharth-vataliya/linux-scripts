@@ -120,7 +120,7 @@ function installNodeJS(){
     read -p "Please give specific version of NodeJs like 18, 20 :- " nodeJs;
     curl -SLO https://deb.nodesource.com/nsolid_setup_deb.sh
     chmod 500 nsolid_setup_deb.sh
-    sudo source nsolid_setup_deb.sh $nodeJs;
+    sudo ./nsolid_setup_deb.sh $nodeJs;
     sudo apt-get install nodejs -y
     echo -e "\n${COLOUR_GREEN}nodejs installed successfully.${NO_COLOUR}\n";
     node --version;
@@ -171,7 +171,10 @@ function installMySql(){
 
     mysql -V;
     sudo systemctl enable --now mysql;
+    if [ $SYSTEMTYPE == "Debian" ];
+    then
     sudo rm mysql-apt-config_*_all.deb;
+    fi;
 }
 function installGit(){
     echo -e "\nInstalling Git .\n";
@@ -189,6 +192,7 @@ function installBun(){
     echo -e "\nInstalling Bun \n";
     curl -fsSL https://bun.sh/install | bash
     echo -e "\n${COLOUR_GREEN}Bun installed successfully.${NO_COLOUR}\n";
+    source  ~/.bashrc
     bun --version
 }
 main;
