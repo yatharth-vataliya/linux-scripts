@@ -31,9 +31,9 @@ function main(){
     7 Bun
     0 All
     ${NO_COLOUR}";
-    
+
     read selectedOption;
-    
+
     case $selectedOption in
         0) installAll ;;
         1) installApache ;;
