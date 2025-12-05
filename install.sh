@@ -97,9 +97,10 @@ function installPHP(){
     php$phpVersion-gd php$phpVersion-redis php$phpVersion-curl php$phpVersion-gmp libapache2-mod-php$phpVersion;
     echo -e "\n${COLOUR_GREEN}PHP version $phpVersion successfully installed.${NO_COLOUR}\n";
     php --version;
-    sudo a2enmod proxy_fcgi setenvif;
-    sudo a2enconf php$phpVersion-fpm;
-    sudo systemctl restart apache2 php$phpVersion-fpm;
+    sudo systemctl start php$phpVersion-fpm;
+    #sudo a2enmod proxy_fcgi setenvif; #run this commands manually if you are using apache
+    #sudo a2enconf php$phpVersion-fpm;
+    #sudo systemctl restart apache2 php$phpVersion-fpm;
 }
 function installComposer(){
     echo -e "\n${COLOUR_GREEN}Installing composer${NO_COLOUR}\n";
