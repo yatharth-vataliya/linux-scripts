@@ -111,14 +111,19 @@ function installApache(){
     echo -e "\n${COLOUR_GREEN}Apache is installed successfully.${NO_COLOUR}\n";
     apache2 -V;
 }
+
 function installPHP(){
     echo -e "\n${COLOUR_RED}Adding necessary PPA for PHP.${NO_COLOUR}\n";
 
     if [ $SYSTEMTYPE == "Debian" ];
     then
-        curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
-        sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
         sudo apt-get update
+        sudo apt-get -y install lsb-release ca-certificates curl
+        sudo curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+        sudo dpkg -i /tmp/debsuryorg-archive-keyring.deb
+        sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+        sudo apt-get update
+
     elif [ $SYSTEMTYPE == "Ubuntu" ];
     then
         sudo add-apt-repository -y ppa:ondrej/php;
@@ -128,7 +133,10 @@ function installPHP(){
     read -p "Please give specific version of PHP. For example 7.4 or 8.2 :- " phpVersion;
     echo -e "\n${COLOUR_GREEN}Installing php version php$phpVersion${NO_COLOUR}\n";
     sudo apt install -y php$phpVersion-fpm php$phpVersion-intl php$phpVersion-mysql php$phpVersion-pdo php$phpVersion-pgsql php$phpVersion-xml php$phpVersion-mbstring php$phpVersion-zip php$phpVersion-imagick php$phpVersion-xdebug php$phpVersion-uuid php$phpVersion-bcmath php$phpVersion-bz2 php$phpVersion-sqlite3 \
-    php$phpVersion-gd php$phpVersion-redis php$phpVersion-curl php$phpVersion-gmp libapache2-mod-php$phpVersion;
+    php$phpVersion-gd php$phpVersion-redis php$phpVersion-curl php$phpVersion-gmp;
+
+    #sudo apt install -y libapache2-mod-php$phpVersion;
+
     echo -e "\n${COLOUR_GREEN}PHP version $phpVersion successfully installed.${NO_COLOUR}\n";
     php --version;
     sudo systemctl start php$phpVersion-fpm;
