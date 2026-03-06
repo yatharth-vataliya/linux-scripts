@@ -29,6 +29,7 @@ function main(){
     5 MySql
     6 Git
     7 Bun
+    8 Nginx
     0 All
     ${NO_COLOUR}";
 
@@ -43,8 +44,9 @@ function main(){
         5) installMySql ;;
         6) installGit ;;
         7) installBun ;;
+        8) installNginx ;;
         *)
-            echo -e "${COLOUR_RED}Please select proper option between 0 to 7${NO_COLOUR}";
+            echo -e "${COLOUR_RED}Please select proper option between 0 to 8${NO_COLOUR}";
             main
             ;;
     esac;
@@ -58,6 +60,38 @@ function installAll(){
     installMySql;
     installGit;
     installBun;
+}
+
+function installNginx() {
+    echo -e "\n${COLOUR_RED}Adding necessary PPA for nginx server.${NO_COLOUR}\n";
+
+    sudo apt install curl gnupg2 ca-certificates lsb-release;
+
+    if [ $SYSTEMTYPE == "Debian" ];
+        sudo apt install debian-archive-keyring;
+
+        curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+
+        gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
+
+        echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] https://nginx.org/packages/debian `lsb_release -cs` nginx" | sudo tee /etc/apt/sources.list.d/nginx.list
+    then
+    elif [ $SYSTEMTYPE == "Ubuntu" ];
+        sudo apt install ubuntu-keyring;
+
+        curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+
+        gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
+
+
+        echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] https://nginx.org/packages/ubuntu `lsb_release -cs` nginx" | sudo tee /etc/apt/sources.list.d/nginx.list
+    then
+    fi
+
+    sudo apt update
+    sudo apt install nginx
+
+    sudo nginx -t
 }
 
 function installApache(){
