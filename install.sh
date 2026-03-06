@@ -68,8 +68,8 @@ function installNginx() {
 
 
     if [ $SYSTEMTYPE == "Debian" ];
-	sudo apt install nginx;
     then
+	sudo apt install nginx;
     elif [ $SYSTEMTYPE == "Ubuntu" ];
     then
     sudo apt install curl gnupg2 ca-certificates lsb-release;
