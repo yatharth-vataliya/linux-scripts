@@ -54,6 +54,7 @@ function main(){
 
 function installAll(){
     installApache;
+    installNginx;
     installPHP;
     installComposer;
     installNodeJS;
@@ -160,53 +161,62 @@ function installComposer(){
 function installNodeJS(){
     # echo -e "\n${COLOUR_RED}Adding necessary PPA for nodejs.${NO_COLOUR}\n";
     # curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt-get install -y nodejs; # Old deprecated script
-    read -p "Please give specific version of NodeJs like 18, 20 :- " nodeJs;
-    curl -SLO https://deb.nodesource.com/nsolid_setup_deb.sh
-    chmod 500 nsolid_setup_deb.sh
-    sudo ./nsolid_setup_deb.sh $nodeJs;
-    sudo apt-get install nodejs -y
-    echo -e "\n${COLOUR_GREEN}nodejs installed successfully.${NO_COLOUR}\n";
-    node --version;
-    npm --version;
-    sudo rm nsolid_setup_deb.sh
+    # old style install so commented for now.
+    # read -p "Please give specific version of NodeJs like 18, 20 :- " nodeJs;
+    # curl -SLO https://deb.nodesource.com/nsolid_setup_deb.sh
+    # chmod 500 nsolid_setup_deb.sh
+    # sudo ./nsolid_setup_deb.sh $nodeJs;
+    # sudo apt-get install nodejs -y
+    # echo -e "\n${COLOUR_GREEN}nodejs installed successfully.${NO_COLOUR}\n";
+    # node --version;
+    # npm --version;
+    # sudo rm nsolid_setup_deb.sh
+    #
+    read -p "Please give specific version of NodeJs like 18, 20, 24 :- " nodeJs;
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+    \. "$HOME/.nvm/nvm.sh"
+    nvm install $nodeJs;
+    node -v;
+    npm -v;
 }
 function installMySql(){
     echo -e "\nInstalling MySql Server.\n";
 
     if [ $SYSTEMTYPE == "Debian" ];
     then
-    wget https://dev.mysql.com/get/mysql-apt-config_0.8.20-1_all.deb
-    sudo apt install ./mysql-apt-config_*_all.deb
+    wget https://dev.mysql.com/get/mysql-apt-config_0.8.36-1_all.deb
+    sudo dpkg -i mysql-apt-config_0.8.36-1_all.deb
+    #sudo apt install ./mysql-apt-config_*_all.deb
     fi;
 
     sudo apt update
 
-    declare -a keyservers=(
-        "hkp://keyserver.ubuntu.com:80"
-        "keyserver.ubuntu.com"
-        "ha.pool.sks-keyservers.net"
-        "hkp://ha.pool.sks-keyservers.net:80"
-        "p80.pool.sks-keyservers.net"
-        "hkp://p80.pool.sks-keyservers.net:80"
-        "pgp.mit.edu"
-        "hkp://pgp.mit.edu:80"
-    )
-
-    keys=$(sudo apt update 2>&1 | grep -o '[0-9A-Z]\{16\}$')
-
-    for key in $keys; do
-        for server in "${keyservers[@]}"; do
-            echo -e "${COLOUR_RED}Fetching GPG key ${key} from ${server}${NO_COLOUR}"
-            sudo apt-key adv --keyserver $server --keyserver-options timeout=10 --recv-keys ${key}
-            if [ $? -eq 0 ]; then
-                echo -e "${COLOUR_GREEN}Key '${key}' successful added from server '${server}'${NO_COLOUR}"
-                break
-            else
-                echo -e "${COLOUR_RED}Failed add key '${key}' from server '${server}'. Try another server${NO_COLOUR}"
-                continue
-            fi
-        done
-    done
+    # declare -a keyservers=(
+    #     "hkp://keyserver.ubuntu.com:80"
+    #     "keyserver.ubuntu.com"
+    #     "ha.pool.sks-keyservers.net"
+    #     "hkp://ha.pool.sks-keyservers.net:80"
+    #     "p80.pool.sks-keyservers.net"
+    #     "hkp://p80.pool.sks-keyservers.net:80"
+    #     "pgp.mit.edu"
+    #     "hkp://pgp.mit.edu:80"
+    # )
+    #
+    # keys=$(sudo apt update 2>&1 | grep -o '[0-9A-Z]\{16\}$')
+    #
+    # for key in $keys; do
+    #     for server in "${keyservers[@]}"; do
+    #         echo -e "${COLOUR_RED}Fetching GPG key ${key} from ${server}${NO_COLOUR}"
+    #         sudo apt-key adv --keyserver $server --keyserver-options timeout=10 --recv-keys ${key}
+    #         if [ $? -eq 0 ]; then
+    #             echo -e "${COLOUR_GREEN}Key '${key}' successful added from server '${server}'${NO_COLOUR}"
+    #             break
+    #         else
+    #             echo -e "${COLOUR_RED}Failed add key '${key}' from server '${server}'. Try another server${NO_COLOUR}"
+    #             continue
+    #         fi
+    #     done
+    # done
 
     sudo apt install -y mysql-server;
 
